@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-CN" data-page-node-id="FPVXAJzH2PABCm3BWO8TCR">
+<head data-page-node-id="SNLIJo2M5qqa3GpgTn6DFo">
+<meta charset="utf-8" data-page-node-id="2GJKmcwdOnn8qHOqtdGDcP" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" data-page-node-id="NLpQ5KtuITyrgGV3bm7Kgg" />
+<meta name="theme-color" content="#ff8a3d" data-page-node-id="BR3y1Igw3kDLM08tU660k3" />
+<title>幼儿识字小达人</title>
+<style>
+  :root{
+    --bg1:#fff3e0; --bg2:#ffe3ef;
+    --card:#ffffff; --done:#e8f8ee; --done-bd:#34c759;
+    --ink:#2b2b2b; --muted:#9a8f86; --accent:#ff8a3d;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    color:var(--ink); min-height:100vh;
+  }
+  .app{max-width:480px;margin:0 auto;padding:14px 14px 30px;min-height:100vh;display:flex;flex-direction:column;}
+  header{text-align:center;}
+  .title{font-size:22px;font-weight:800;letter-spacing:.5px;}
+  .sub{font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.5;}
+  .progress{height:12px;background:#ffe7d4;border-radius:99px;overflow:hidden;margin:14px 0 6px;}
+  .bar{height:100%;width:0;background:linear-gradient(90deg,#34c759,#7be495);transition:width .35s;}
+  .counts{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);}
+  .counts b{color:var(--ink);}
+  .tabs{display:flex;gap:8px;margin:16px 0 4px;}
+  .tab{flex:1;border:none;background:#fff;border-radius:14px;padding:11px 4px;font-size:14px;color:var(--muted);box-shadow:0 2px 6px rgba(0,0,0,.04);position:relative;cursor:pointer;}
+  .tab.active{background:linear-gradient(135deg,#ffb347,#ff8a3d);color:#fff;font-weight:700;}
+  .tab i{font-style:normal;background:rgba(0,0,0,.12);border-radius:10px;padding:0 6px;font-size:12px;margin-left:4px;}
+  .tab.active i{background:rgba(255,255,255,.32);}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .pager{display:flex;align-items:center;justify-content:space-between;margin-top:6px;}
+  .pager button{border:none;background:#fff;border-radius:12px;padding:9px 12px;font-size:14px;color:var(--accent);box-shadow:0 2px 6px rgba(0,0,0,.05);cursor:pointer;}
+  .pginfo{font-size:14px;color:var(--muted);}
+  .pginfo b{color:var(--ink);}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px;}
+  .card{position:relative;background:var(--card);border:2px solid #ffe0c2;border-radius:18px;padding:20px 0;display:flex;align-items:center;justify-content:center;font-size:54px;line-height:1;cursor:pointer;user-select:none;transition:transform .12s,background .2s,border-color .2s;box-shadow:0 4px 10px rgba(255,140,60,.08);}
+  .card:active{transform:scale(.96);}
+  .card.done{background:var(--done);border-color:var(--done-bd);color:#1f9d4f;}
+  .card .box{position:absolute;top:9px;right:11px;width:23px;height:23px;border-radius:7px;border:2px solid #ffb27a;background:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;line-height:1;transition:background .15s,border-color .15s;}
+  .card.done .box{background:var(--done-bd);border-color:var(--done-bd);}
+  .card.done .box::after{content:"✓";font-weight:800;}
+  .actions{display:flex;gap:10px;margin-top:14px;}
+  .actions .btn{flex:1;}
+  .nav2{display:flex;gap:10px;margin-top:10px;}
+  .nav2 .btn{flex:1;}
+  .btn{border:none;border-radius:14px;padding:13px 14px;font-size:15px;background:#fff;color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.05);cursor:pointer;}
+  .btn.primary{background:linear-gradient(135deg,#4d8dff,#2f6bff);color:#fff;font-weight:700;}
+  .btn.ghost{background:#fff7ee;color:#c2641a;}
+  .pendhead{margin-top:12px;}
+  .pendhead .btn{width:100%;}
+  .wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  .chip{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;background:#fff;border:1px solid #ffe0c2;cursor:pointer;}
+  .chip.lib{background:var(--done);border-color:var(--done-bd);color:#1f9d4f;}
+  .chip.pend{background:#fff;border-color:#ffe0c2;}
+  .chip:active{transform:scale(.92);}
+  .empty{text-align:center;color:var(--muted);font-size:15px;padding:40px 10px;}
+  .hint{font-size:12px;color:var(--muted);margin-top:14px;text-align:center;}
+  footer{margin-top:auto;padding-top:20px;text-align:center;}
+  .linkbtn{background:none;border:none;color:var(--muted);text-decoration:underline;font-size:12.5px;cursor:pointer;}
+  .note{font-size:11px;color:#bbaea3;margin-top:6px;line-height:1.5;}
+  .toast{position:fixed;left:50%;bottom:42px;transform:translateX(-50%) translateY(20px);background:rgba(0,0,0,.82);color:#fff;padding:10px 18px;border-radius:99px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:9;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body data-page-node-id="nMT7xXUfRhjuzI6uaIQrDz">
+<div class="app" data-page-node-id="eEthr2LixmFIdMq4Udym9G">
+  <header data-page-node-id="BQjrfGKsbJJ54RBl27c0A3">
+    <div class="title" data-page-node-id="uDqVw6gMI9bGIhwICrcmyu">🌟 幼儿识字小达人</div>
+    <div class="sub" data-page-node-id="LD0MjhK3gywTUCW9VnWTWM">认识的字点一下打勾，自动收进「我的字库」；没勾的留在「待完成」。</div>
+    <div class="progress" data-page-node-id="qX1GFZkPBY2nFUCXDzJXqy"><div class="bar" id="bar" data-page-node-id="O6zhoGrqIMPtReNQC5niCq"></div></div>
+    <div class="counts" data-page-node-id="gWwqoRR66E2fq9cyPmGY6N">
+      <span data-page-node-id="7mwAmRpppvvm6n2GsnEDzk">已掌握 <b id="cMastered" data-page-node-id="zUma0ZqHfVBJd3jryCSIJs">0</b></span>
+      <span data-page-node-id="EI5L3vhoexjSNEUsIvcBBt">待完成 <b id="cPending" data-page-node-id="GsfSE6m7HPrc6JNfS0aF0l">0</b></span>
+      <span data-page-node-id="wIFINYWK41TEFlTfOuutFD">共 <b id="cTotal" data-page-node-id="Vj16dbRB1NCslewE48jLUo">0</b></span>
+    </div>
+  </header>
+
+  <nav class="tabs" data-page-node-id="zhAxJGAHYxRrN3fimD0rN4">
+    <button class="tab active" data-tab="study" data-page-node-id="OMbWGaqQg8R1ElQa61toTy">📖 学习</button>
+    <button class="tab" data-tab="lib" data-page-node-id="XBvLZEFIIVrT8BOffFEVoX">⭐ 我的字库 <i id="badgeLib" data-page-node-id="oq75FOau7txVx6ILeEGUcp">0</i></button>
+    <button class="tab" data-tab="pend" data-page-node-id="2ZgO9wSaNfBDYPXwrhupGi">📝 待完成 <i id="badgePend" data-page-node-id="eCXWRTbYcXQmYQLBUwNDMk">0</i></button>
+  </nav>
+
+  <section id="study" class="panel active" data-page-node-id="CgnXNDWXtGzM81IXU3zJQg">
+    <div class="pager" data-page-node-id="ve3R7Tcv9M7og4IHmp2l5Q">
+      <button id="prev" data-page-node-id="oPlE4sZArZNeRvCGHfMTna">‹ 上一页</button>
+      <div class="pginfo" data-page-node-id="nk8aKyaiAWRVmHlPNaB2WC">第 <b id="pageNo" data-page-node-id="ugDmX9DGJByHurzzBDYn2A">1</b> / <b id="pageAll" data-page-node-id="Gfc4FYJAKDCtLXQLCBJB0L">0</b> 页</div>
+      <button id="next" data-page-node-id="wqY0UwHTw4EqenTJRzSqnC">下一页 ›</button>
+    </div>
+    <div class="grid" id="grid" data-page-node-id="wFlMxgSF67QlbiHq9YtAbN"></div>
+    <div class="actions" data-page-node-id="52ahlhMTn19InMBjm8m8QC">
+      <button id="allYes" class="btn ghost" data-page-node-id="HY7CuhBJnEa0S8vZtoR99I">本页全认识</button>
+      <button id="allNo" class="btn ghost" data-page-node-id="aDzg2kmIs1dcRbQOXwuia8">本页重来</button>
+    </div>
+    <div class="nav2" data-page-node-id="9aEoL9ZEjYyMQANeWLEqMB">
+      <button id="prev2" class="btn" data-page-node-id="nVioq1vEgRydqjVpJPhLZS">‹ 上一页</button>
+      <button id="next2" class="btn primary" data-page-node-id="84FanYgZWicfpA2uhlImFy">下一页 ›</button>
+    </div>
+  </section>
+
+  <section id="lib" class="panel" data-page-node-id="sxAb0PA9LiCqEliJC8Xh6l">
+    <div class="empty" id="libEmpty" hidden data-page-node-id="4kciEWmNbGsRn68FAplirG">还没有认识的字，去「学习」里打勾吧～</div>
+    <div class="wrap" id="libWrap" data-page-node-id="bPG2D5XhiVvWRele9IYgI1"></div>
+    <p class="hint" data-page-node-id="5OiD7lbde0LCh4CxSOED0j">提示：点字可取消「已认识」，移回待完成。</p>
+  </section>
+
+  <section id="pend" class="panel" data-page-node-id="BE4lDHsOIsypoHC2gHho7V">
+    <div class="pendhead" data-page-node-id="t2BOfiBvQHOPf5aFEGuOuL"><button id="continue" class="btn primary" data-page-node-id="nqlWQi9Yw5mb0N9YXwCJFP">▶ 继续学习（跳到第一个未完成的字）</button></div>
+    <div class="empty" id="pendEmpty" hidden data-page-node-id="HJTBA7PaybFysmeoa8ddyQ">🎉 全部认识啦！太棒了！</div>
+    <div class="wrap" id="pendWrap" data-page-node-id="SWFaTAhCZOTPg3RMrB7NPB"></div>
+    <p class="hint" data-page-node-id="eArMJ7gmNHjJcF8gRd1rB8">提示：点字可直接标记为「已认识」。</p>
+  </section>
+
+  <footer data-page-node-id="nUWoGaAMLASPXbcbNVPiMh">
+    <button id="reset" class="linkbtn" data-page-node-id="es84rjXtxCyrDLPZoJPSrb">重置本机进度</button>
+    <div class="note" data-page-node-id="JChFkfDIdDJFYrvpfgrwwB">进度保存在「本设备 + 本链接」（localStorage）。换设备、清缓存或用别的链接会分开记录。</div>
+  </footer>
+
+  <div id="toast" class="toast" data-page-node-id="yO6pdLXYlcn0DN3gGhe3Do"></div>
+</div>
+
+<script>window.SHIZI_CHARS = "一二三上口目耳手日田禾火虫云山八十了子人大月儿头里可东西天四女开水去来不小少牛果鸟早书刀尺本木林土力心中五立正在后我好长比巴把下个雨们问有半从你才明同学自己门衣白的又和竹牙马用几只石出见对妈全回工厂冬风花飞入什么双国王方青气生字左右红时动万吃叫主江住没以多会走北京广公太阳金因为他地河也听单招呼快乐玩当讲行许床光低乡色外爸再午节叶米分豆那到兴千成间运池欢网古夕李打拍足声身体之近习远玉义采无尖角机台放鱼朵过这呀边吗吧加文平办让包伙伴丁元车共坐连百今还舌块非往片瓜进空她医别干奇七吓怕羊条向爬房找两顶肚皮变极作坏法如已它毛更知识处园队号巾杨壮枫松杉化写丛六九朋友季吹肥农事忙归辛苦底杆岁画评纸报另及并支灯句电先闭沉发沙依尽层炉川直些巨位每升闪狗名央丽现产份坡枝老收市井观沿话际阵却纷次盯言呢邻治怪年夜披利担志伍师军士忘泼龙令刘兰反村关危阴似苍于论岸切久步旺汽物爷爪折张扎抓吵但苗汗场伤诗妆丝冲寻仔吐杏邮员叔局认礼邓引注休味买具甘劳匹波纹舍求州华岛齐奋舟艾转团闹贝壳甲币与财购茄肉鸡炒饭拉苹灵伞弟戏母周围补充合死记屁股净幸使劲亡牢劝丢告图交页抢麦该伯刻穷含岭吴乌压垂户迎扑针助导永杯失易兔安店决定夫完卖应抽纺布忆弓炎此传忽启由汉服扮孔狂功互所扬径君泥印列规则乱迟争仙勾油曲丰旧怜伸板奶命扫乎泪备饱父羽吞英欠钓而拢至帆饮初未优浅岩刺宝业灰亚严实视坛材软刮库妙受击鸣诉寸册抖吸司众弃郊谷男或者冻冷肯诚术斗刚血仍取匆芦芽泛拂形尔沾闲纤胀势仿佛止守宋其尘讶代价欣匀哎叹何牧兄异佳世伟存约阿欧社县匠设计史创且历芬芳内寿苏示昆阻宇宙状狐巧克肠抬拨表夺仇付泡件皂若扯仰串希呈幻芒冰宁官汪攻迅轮必灿凶庙武性卷货夹夸务衬衫负责艺驴厉抱犹余卵坑庄枪沟即系证究达纪技改亿质任吟侧庐虎占均茎固宅择址良穴厅卧专卫斧丈奔茂曰返佩坚违抗环呆奈齿护幼庞级念呵昏凭亏否况败尤帅丑征词杰亦怀凡训斥戎妇旱扔杂茅构饰凤序投例卜帐吼划末态吨肢纳拥防灶灭叉抹忧贪闷讨厌坝忠戒咕汤伏苟侍附昂供扩范努刹仅罗杜郁肩陆乳贫扭炕劫扒尸芙伦岗介妖乖丫允私拆宜朱匣亩吩咐汛访协召臣议典抄怯拒枚束赤丘妨拐叮延扶郎歹罕纱妻托乃杭亥拘泻试估宏闯奉氏区杀疗秀抑吊忍权考迪钉毕枕孙泊寺旷怡免纠抛岂斩凯述刊朴拔尾妒忌委呐冈饥斤杖申勿拖坠岳巫拟庆诊沃审剂吭仗扳侄咙芝圣犯轰诈怔矛吾尼纵码仪驰辽吆拇轧拧纽扣仓享拙帘抡沸屹迈府汇制坦疙沮丧尚呻废汹困勺苔坪瓦柜甩矿贡矣盲纯郑伶拌贩彼枣肿泣乏抵叨沫吻刑押执彻迁迫批炊弗版阶拦民各式兵企陈育卡判宗伊吉予泽弄析订译侠讯役玛丹旦灾仁邦奴污励侦券扰乔胁驱帕邪巡伪昌询廷沈旨戈仲卢吕玄冯抚肝怖肤伐仆歼妥讼乙尿轨劣纲肌卓贤饲奸诞氛泄肖驳肺卑歧佐孕妄孝畅吁仑甫账姊拓兆咒玫吏辰讽旬垄夷侨肾贞坟咖巩昔轩龟宠兑乞祈坎丸虏沼匈秃宛贬芯汁坊朽佣汝迄呜妃诡卒甸囚丐泳泌枢弘垃圾屿丙犬侣纬刃叭顷尬沦沪佑妓删伺冶庇吱秉矢帜驯贮觅咋诀旭苑呕凸凹屯灼帖叩坤讳乍枉厕讥扼迂拣汰扛牡肪肘迭沧沁沛氓杠冉抒庚夭侈狈苛卦祀芭邑岔韧忿肮叽疚苇芜佃匕尧亢闸肋咄忱卉殴弛侥拎巳肛呛吠驮炬乒狞沐咏沽乓吝肴囱沥刨拗刁冗戊吮叼芹卤皿汞讹坯苞酉坷戌卯泞芥灸壬茉岖臼彤抠秆疟纫闰拄芋茁囤夯矾玖";</script>
+<script>
+(function(){
+  var CHARS = (window.SHIZI_CHARS || "").split("");
+  var TOTAL = CHARS.length;
+  var PER = 10;
+  var PAGES = Math.ceil(TOTAL / PER);
+  var mastered = new Set();
+  var cur = 0;
+
+  function $(s){ return document.querySelector(s); }
+  function storeKey(){
+    var p = new URLSearchParams(location.search);
+    var b = p.get("book");
+    if(b) return "shizi1300_book_" + b;
+    var base = location.origin + location.pathname + location.search;
+    var h = 0;
+    for(var i=0;i<base.length;i++){ h = (h*31 + base.charCodeAt(i)) >>> 0; }
+    return "shizi1300_" + h.toString(36);
+  }
+  var KEY = storeKey();
+
+  function load(){
+    try{
+      var raw = JSON.parse(localStorage.getItem(KEY) || "[]");
+      if(Array.isArray(raw) && raw.length && typeof raw[0] === "number"){
+        // 兼容旧版：下标存储 -> 转为字符存储（顺序无关，便于重排）
+        mastered = new Set(raw.map(function(i){ return CHARS[i]; }).filter(Boolean));
+      } else {
+        mastered = new Set(raw);
+      }
+    }catch(e){ mastered = new Set(); }
+  }
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(Array.from(mastered))); }catch(e){}
+  }
+
+  function updateStats(){
+    var m = mastered.size;
+    $("#cMastered").textContent = m;
+    $("#cPending").textContent = TOTAL - m;
+    $("#cTotal").textContent = TOTAL;
+    $("#badgeLib").textContent = m;
+    $("#badgePend").textContent = TOTAL - m;
+    $("#pageAll").textContent = PAGES;
+    $("#bar").style.width = (TOTAL ? (m/TOTAL*100) : 0) + "%";
+  }
+
+  function pop(el){
+    if(el && el.animate){
+      el.animate([{transform:"scale(1)"},{transform:"scale(1.12)"},{transform:"scale(1)"}],{duration:220});
+    }
+  }
+
+  function renderStudy(){
+    var grid = $("#grid");
+    grid.innerHTML = "";
+    var start = cur * PER;
+    for(var i=start; i<start+PER && i<TOTAL; i++){
+      (function(idx){
+        var b = document.createElement("button");
+        b.className = "card" + (mastered.has(CHARS[idx]) ? " done" : "");
+        b.innerHTML = '<span class="ch">'+CHARS[idx]+'</span><span class="box"></span>';
+        b.addEventListener("click", function(){ toggle(idx, b); });
+        grid.appendChild(b);
+      })(i);
+    }
+    $("#pageNo").textContent = cur + 1;
+  }
+
+  function toggle(i, el){
+    var ch = CHARS[i];
+    if(mastered.has(ch)){ mastered.delete(ch); if(el) el.classList.remove("done"); }
+    else { mastered.add(ch); if(el){ el.classList.add("done"); pop(el); } checkPageDone(); }
+    save(); updateStats();
+  }
+
+  function checkPageDone(){
+    var start = cur*PER, all = true;
+    for(var i=start; i<start+PER && i<TOTAL; i++){ if(!mastered.has(CHARS[i])){ all=false; break; } }
+    if(all) toast("这一页都认识啦 🎉");
+  }
+
+  function renderLib(){
+    var w = $("#libWrap"); w.innerHTML = "";
+    var list = Array.from(mastered).sort(function(a,b){ return CHARS.indexOf(a) - CHARS.indexOf(b); });
+    $("#libEmpty").hidden = list.length > 0;
+    list.forEach(function(ch){
+      var s = document.createElement("span");
+      s.className = "chip lib"; s.textContent = ch;
+      s.title = "点击取消已认识";
+      s.addEventListener("click", function(){
+        mastered.delete(ch); save(); updateStats(); renderLib(); renderStudy(); toast("已移回待完成");
+      });
+      w.appendChild(s);
+    });
+  }
+
+  function renderPend(){
+    var w = $("#pendWrap"); w.innerHTML = "";
+    var list = [];
+    for(var i=0;i<TOTAL;i++){ if(!mastered.has(CHARS[i])) list.push(CHARS[i]); }
+    $("#pendEmpty").hidden = list.length > 0;
+    list.forEach(function(ch){
+      var s = document.createElement("span");
+      s.className = "chip pend"; s.textContent = ch;
+      s.title = "点击标记为已认识";
+      s.addEventListener("click", function(){
+        mastered.add(ch); save(); updateStats(); renderPend(); renderStudy(); pop(s);
+      });
+      w.appendChild(s);
+    });
+  }
+
+  function gotoFirstPending(){
+    var idx = -1;
+    for(var i=0;i<TOTAL;i++){ if(!mastered.has(CHARS[i])){ idx=i; break; } }
+    if(idx < 0){ toast("全部认识啦 🎉"); return; }
+    cur = Math.floor(idx / PER);
+    switchTab("study");
+    renderStudy();
+  }
+
+  function switchTab(t){
+    document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("active"); });
+    document.querySelectorAll(".tab").forEach(function(b){ b.classList.remove("active"); });
+    $("#"+t).classList.add("active");
+    document.querySelector('.tab[data-tab="'+t+'"]').classList.add("active");
+    if(t === "lib") renderLib();
+    if(t === "pend") renderPend();
+  }
+
+  var toastT;
+  function toast(msg){
+    var t = $("#toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(toastT); toastT = setTimeout(function(){ t.classList.remove("show"); }, 1600);
+  }
+
+  $("#prev").onclick = $("#prev2").onclick = function(){ if(cur>0){ cur--; renderStudy(); } };
+  $("#next").onclick = $("#next2").onclick = function(){ if(cur<PAGES-1){ cur++; renderStudy(); } };
+  $("#allYes").onclick = function(){
+    var s = cur*PER;
+    for(var i=s;i<s+PER && i<TOTAL;i++){ mastered.add(CHARS[i]); }
+    save(); updateStats(); renderStudy(); toast("本页已全认识 👍");
+  };
+  $("#allNo").onclick = function(){
+    var s = cur*PER;
+    for(var i=s;i<s+PER && i<TOTAL;i++){ mastered.delete(CHARS[i]); }
+    save(); updateStats(); renderStudy();
+  };
+  $("#continue").onclick = gotoFirstPending;
+  document.querySelectorAll(".tab").forEach(function(b){ b.onclick = function(){ switchTab(b.dataset.tab); }; });
+  $("#reset").onclick = function(){
+    if(confirm("确定清空本机本链接的识字进度吗？此操作不可恢复。")){
+      mastered.clear(); save(); updateStats(); renderStudy(); renderLib(); renderPend(); toast("已重置");
+    }
+  };
+
+  load(); updateStats(); renderStudy();
+})();
+</script>
+</body>
+</html>
