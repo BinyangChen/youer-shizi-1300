@@ -1,0 +1,4 @@
+# 依赖 / 系统文件
+node_modules/
+.DS_Store
+*.log
